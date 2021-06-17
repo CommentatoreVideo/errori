@@ -43,7 +43,7 @@ function App() {
         return {
           data:doc.data().data,
           descrizione:doc.data().descrizione,
-          minuti:doc.data().minuti,
+          minuti:doc.data().minutaggio,
           video:doc.data().video,
           id: doc.id
         };
