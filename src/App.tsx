@@ -44,7 +44,7 @@ function App() {
           data:doc.data().data,
           descrizione:doc.data().descrizione,
           minuti:doc.data().minutaggio,
-          video:doc.data().video,
+          video:doc.data().url,
           id: doc.id
         };
       });
@@ -54,7 +54,7 @@ function App() {
   return (
     <div className="container-fluid">
       <Navbar attivo={attivo} setAttivo={setAttivo}></Navbar>
-      {attivo==="Errori"?<Errori errori={errori}></Errori>:""}
+      {attivo==="Errori"?<Errori errori={errori} setErrori={setErrori} db={db}></Errori>:""}
       {attivo==="Aggiungi errore"?<Form database={db} errori={errori} setErrori={setErrori}></Form>:""}
     </div>
   );
