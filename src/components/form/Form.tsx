@@ -4,22 +4,25 @@ import TextField from "./TextField";
 import Data from "./Data";
 import firebase from "firebase/app";
 import {Errore} from "./../../interfaces";
-
+import Login from "../Login";
+//TODO: Spostare questa interface nel suo file dedicato
 export interface FormProps {
 	database: firebase.firestore.Firestore;
 	errori: Errore[];
-	setErrori: (e:any) => any;
+	setErrori: (e: any) => any;
+	logged:boolean;
+	setLogged:(logged:boolean)=>any;
 }
 
-const Form: React.FunctionComponent<FormProps> = ({database, setErrori, errori}) => {
+const Form: React.FunctionComponent<FormProps> = ({database, setErrori,logged,setLogged}) => {
 	const [descrizione, setDescrizione] = useState("");
 	const [data, setData] = useState("");
 	const [minutaggio, setMinutaggio] = useState("");
 	const [url, setUrl] = useState("");
 
 	async function premuto() {
-		const controllo = controllaDati(descrizione, data, minutaggio, url);
-		if (controllo !== "") return alert(controllo);
+		const risultatoControlloDati = controllaDati(descrizione, data, minutaggio, url);
+		if (risultatoControlloDati !== "") return alert(risultatoControlloDati);
 		const newDate = formattaData(data);
 		if (newDate === "") return alert("C'è stato un problema sconosciuto");
 		const res = await database.collection("errori").add({
@@ -28,7 +31,7 @@ const Form: React.FunctionComponent<FormProps> = ({database, setErrori, errori})
 			minutaggio,
 			url,
 		});
-		setErrori((errori:Errore[]) => {
+		setErrori((errori: Errore[]) => {
 			alert("Errore aggiunto correttamente");
 			return [
 				...errori,
@@ -42,7 +45,12 @@ const Form: React.FunctionComponent<FormProps> = ({database, setErrori, errori})
 			];
 		});
 	}
-
+	if (!logged)
+		return (
+			<div className="container-fluid">
+				<Login setLogged={setLogged}></Login>
+			</div>
+		);
 	return (
 		<>
 			<TextArea label="Descrizione" placeholder="Inserisci la descrizione" value={descrizione} setValue={setDescrizione}></TextArea>
@@ -59,21 +67,18 @@ const Form: React.FunctionComponent<FormProps> = ({database, setErrori, errori})
 export default Form;
 
 function controllaDati(descrizione: string, data: string, minutaggio: string, url: string) {
-	let stringa = "";
-	const regexMinutaggio = /^\d?\d?:?\d?\d:\d\d$/;
-	if (descrizione === "") stringa = "Descrizione non valida";
-	if (data === "") stringa = "Data non valida";
-	if (!regexMinutaggio.test(minutaggio)) stringa = "Minutaggio non valido";
-	if (url === "") stringa = "Url non valido";
-	return stringa;
+	const regexMinutaggio = /^(\d{2}):?\d{1,2}:\d{2}$/;
+	if (descrizione === "") return "Descrizione non valida";
+	if (data === "") return "Data non valida";
+	if (!regexMinutaggio.test(minutaggio)) return "Minutaggio non valido";
+	if (url === "") return "Url non valido";
+	return "";
 }
 
 function formattaData(data: string) {
 	const regexData = /(\d{4})-(\d{2})-(\d{2})/;
 	const ris = regexData.exec(data);
-	if (ris != null) {
-		const [, anno, mese, giorno] = ris;
-		return `${giorno}/${mese}/${anno}`;
-	}
-	return "";
+	if (ris === null) return "";
+	const [, anno, mese, giorno] = ris;
+	return `${giorno}/${mese}/${anno}`;
 }

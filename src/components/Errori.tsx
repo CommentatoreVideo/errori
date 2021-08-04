@@ -19,22 +19,23 @@ const Errori: React.FunctionComponent<ErroriProps> = ({errori, db,setErrori}) =>
 	}
 	const tbody = errori.map(errore => {
 		let riga = [];
-		riga.push(<td key={errore.id + "1"}>{errore.data}</td>);
-		riga.push(<td key={errore.id + "2"}>{errore.descrizione}</td>);
-		riga.push(<td key={errore.id + "3"}>{errore.minuti}</td>);
+		const {id,data,descrizione,minuti,video}=errore;
+		riga.push(<td key={`${id}1`}>{data}</td>);
+		riga.push(<td key={`${id}2`}>{descrizione}</td>);
+		riga.push(<td key={`${id}3`}>{minuti}</td>);
 		riga.push(
-			<td key={errore.id + "4"}>
-				<a href={errore.video}>Link</a>
+			<td key={`${id}4`}>
+				<a href={video}>Link</a>
 			</td>
 		);
 		riga.push(
-			<td key={errore.id + "5"}>
-				<button className="btn btn-danger" onClick={() => elimina(errore.id)}>
+			<td key={`${id}5`}>
+				<button className="btn btn-danger" onClick={() => elimina(id)}>
 					Elimina
 				</button>
 			</td>
 		);
-		return <tr key={errore.id}>{riga}</tr>;
+		return <tr key={id}>{riga}</tr>;
 	});
 	return (
 		<table className="table">
