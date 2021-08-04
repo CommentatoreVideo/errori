@@ -17,6 +17,7 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({attivo, setAttivo}) => {
 				<ul className="navbar-nav mr-auto">
 					<NavLink attivo={attivo} testo="Errori" premuto={premutoLink}></NavLink>
 					<NavLink attivo={attivo} testo="Aggiungi errore" premuto={premutoLink}></NavLink>
+					<NavLink attivo={attivo} testo="Modifica errore" premuto={premutoLink}></NavLink>
 				</ul>
 			</div>
 		</nav>

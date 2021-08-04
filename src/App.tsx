@@ -9,6 +9,7 @@ import Errori from "./components/Errori";
 import {Errore} from "./interfaces";
 import "@popperjs/core";
 import "bootstrap/dist/js/bootstrap";
+import Modifica from "./components/Modifica";
 const globalAny: any = global;
 require("dotenv").config();
 globalAny.jQuery = require("jquery");
@@ -63,6 +64,7 @@ function App() {
 			<Navbar attivo={attivo} setAttivo={setAttivo}></Navbar>
 			{attivo === "Errori" ? <Errori errori={errori} setErrori={setErrori} db={db}></Errori> : ""}
 			{attivo === "Aggiungi errore" ? <Form setLogged={setLogged} logged={logged} database={db} errori={errori} setErrori={setErrori}></Form> : ""}
+			{attivo === "Modifica errore" ? <Modifica setLogged={setLogged} logged={logged} database={db} errori={errori} setErrori={setErrori}></Modifica> : ""}
 		</div>
 	);
 }
